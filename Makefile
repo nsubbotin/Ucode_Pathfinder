@@ -1,46 +1,47 @@
-NAME = pathfinder
+NAME	=	pathfinder
 
-FLAG = -std=c11 -Wall -Wextra -Werror -Wpendatic
+CFLG	=	-std=c11 $(addprefix -W, all extra error pedantic) -g
 
-SRCD = src
-INCD = inc
-OBJD = obj
+SRC_DIR	= src
+INC_DIR	= inc
+OBJ_DIR	= obj
 
-LMXA := libmx/libmx.a
-LMXI := libmx/inc
+INC_FILES = $(wildcard $(INC_DIR)/*.h)
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:%.c=%.o)))
 
-inc = pathfinder.h
-INCS = $(addprefix $(INCD)/, $(INC))
-
-SRC = main.c check.c parse.c algorithm.c output.c
-
-SRCS = $(addprefix $(SRCD)/, $(SRC))
-OBJS = $(addprefix $(OBJD)/, $(SRC:%.c=%.o))
+LMX_DIR	= libmx
+LMX_A:=	$(LMX_DIR)/libmx.a
+LMX_INC:= $(LMX_DIR)/inc
 
 all: install
 
-install: $(LMXA) $(NAME)
+install: $(LMX_A) $(NAME)
 
-$(NAME): $(OBJS)
-				@clang $(FLAG) $(OBJS) $(LMXA) -o $@
+$(NAME): $(OBJ_FILES)
+	@clang $(CFLG) $(OBJ_FILES) -L$(LMX_DIR) -lmx -o $@
+	@printf "\r\33[2K$@ \033[32;1mcreated\033[0m\n"
 
-$(OBJD)/%.o: $(SRCD)/%.c $(INCS)
-				@clang $(FLAG) -c $< -o $@ -I$(INCD) -I$(LMXI)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_FILES)
+	@clang $(CFLG) -c $< -o $@ -I$(INC_DIR) -I$(LMX_INC)
+	@printf "\r\33[2K$(NAME) \033[33;1mcompile \033[0m$(<:$(SRC_DIR)/%.c=%) "
 
-$(OBJS): | $(OBJD)
+$(OBJ_FILES): | $(OBJ_DIR)
 
-$(OBJD):
-				@mkdir -p $@
+$(OBJ_DIR):
+	@mkdir -p $@
 
-$(LMXA):
-				@make -sC libmx
-
+$(LMX_A):
+	@make -sC $(LMX_DIR)
+	
 clean:
-				@make -sC libmx $@
-				@rm -rf $(OBJD)
+	@rm -rf $(OBJ_DIR)
+	@printf "$(OBJ_DIR) in $(NAME) \033[31;1mdeleted\033[0m\n"
 
-uninstall: clean
-					@make -sC libmx $@
-					@rm -rf $(NAME)
+uninstall:
+	@make -sC $(LMX_DIR) $@
+	@rm -rf $(OBJ_DIR)
+	@rm -rf $(NAME)
+	@printf "$(NAME) \033[31;1muninstalled\033[0m\n"
 
-reinstall: uninstall install
+reinstall: uninstall all

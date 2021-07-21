@@ -9,41 +9,42 @@ static void printErrLine(int nline) {
 }
 
 static void checkSpace(char **lines, char *file) {
-    char *f1 = file;
+    char *fl = file;
     char **ln = lines;
     int i = 0;
     int len = 0;
 
-    if (*f1 == '\n')
+    if (*fl == '\n')
         printErrLine(0);
-    while (*f1) {
-        if (*f1 == '\n' && *(f1 + 1) == '\n')
+    while (*fl) {
+        if (*fl == '\n' && *(fl + 1) == '\n')
             while (ln[i]) {
                 len = mx_strlen(ln[i]);
-                if (mx_strncmp(f1 - len, ln[i], mx_strlen(ln[i])) == 0)
+                if (mx_strncmp(fl - len, ln[i], mx_strlen(ln[i])) == 0)
                     printErrLine(i + 1);
                 i++;
             }
-        f1++;
+        fl++;
     }
 }
 
-static void checkline(char **lines, int nline) {
+static void checkline(char **lines, int nline) 
+{
     int i = 0;
     int copy_i = 0;
 
     for (int n = 1; n <= nline; n++) {
         i = 0;
         copy_i = 0;
-        
-        while (mx_isalpha(lines[n][i]))
+
+        while (mx_isalpha(lines[n][i])) 
             i++;
         if (i == 0 || lines[n][i] != '-')
             printErrLine(n);
         i++;
 
         copy_i = i;
-        while (mx_isalpha(lines[n][copy_i]))
+        while (mx_isalpha(lines[n][copy_i])) 
             copy_i++;
         if (copy_i - i == 0 || lines[n][copy_i] != ',')
             printErrLine(n);
@@ -55,18 +56,20 @@ static void checkline(char **lines, int nline) {
     }
 }
 
-static void parse(char *file) {
+static void parse(char *file) 
+{
     char **lines = mx_strsplit(file, '\n');
     int nline = 0;
     int at = 0;
-
-    while (lines[nline])
+    
+    while (lines[nline]) 
         nline++;
     if (lines[0][0] == '0') {
         mx_printerr("error: invalid number of islands\n");
         exit(0);
     }
-    while (lines[0][at]) {
+    while (lines[0][at]) 
+    {
         if (!mx_isdigit(lines[0][at])) {
             mx_printerr("error: line 1 is not valid\n");
             exit(0);
@@ -78,7 +81,8 @@ static void parse(char *file) {
     mx_del_strarr(&lines);
 }
 
-void errorHandler(int argc, char file, char **argv) {
+void errorHandler(int argc, char *file, char **argv) 
+{
     if (argc != 2) {
         mx_printerr("usage: ./pathfinder [filename]\n");
         exit(0);

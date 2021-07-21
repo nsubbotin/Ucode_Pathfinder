@@ -11,7 +11,8 @@ static void parsing(char *fd, int ***matrix, char ***set) {
     mx_del_strarr(&arrarr);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
     int **matrix = NULL;
     char **set = NULL;
     char *file = mx_file_to_str(argv[1]);
@@ -24,4 +25,3 @@ int main(int argc, char *argv[]) {
     mx_del_strarr(&set);
     return 0;
 }
-

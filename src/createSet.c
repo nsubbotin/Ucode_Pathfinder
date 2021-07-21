@@ -20,7 +20,7 @@ static void setCheck(char ***set, char ***array) {
     int i = 0;
 
     for (int flag = 0; *arr; flag = 0) {
-        if (mx_isdigit(*arr))
+        if (mx_isdigit(**arr))
             arr++;
         if (*arr) {
             flag = createFlag(*arr, set1);
@@ -46,14 +46,14 @@ static int countSet(char **arr, char *nIslands) {
         if (arr[0])
             count++;
         for (int i = 1; arr[i] != NULL; i++) {
-            if (mx_isdigit(arr[i][0]))
+            if (mx_isdigit(arr[i][0])) 
                 i++;
-            if (arr[i] == NULL)
+            if (arr[i] == NULL) 
                 break;
             for (j = i - 1; j >= 0; j--) {
-                if (mx_strcmp(arr[i], arr[j]) == 0)
+                if (mx_strcmp(arr[i], arr[j]) == 0) 
                     break;
-                if (j == 0)
+                if (j == 0) 
                     count++;
             }
         }
@@ -67,7 +67,7 @@ static int countSet(char **arr, char *nIslands) {
 
 void createSet(char ***set, char ***arr, char *nIslands) {
     int count = countSet(*arr, nIslands);
-    *set = (char **)malloc((count +1) * sizeof(char *));
+    *set = (char **)malloc((count + 1) * sizeof(char *));
     **set = NULL;
     setCheck(&(*set), &(*arr));
 }

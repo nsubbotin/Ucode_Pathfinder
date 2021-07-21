@@ -1,7 +1,5 @@
 #include "libmx.h"
 
-int mx_isalpha(int c) {
-	if ((c <= 'Z' && c >= 'A') || (c >= 'a' && c <= 'z'))
-		return (1);
-	return (0);
+bool mx_isalpha(int c){
+	return (c>=65&&c<=90)||(c>=97&&c<=122);
 }

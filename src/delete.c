@@ -3,38 +3,39 @@
 static void popAll(t_path **head) {
     t_path *p = NULL;
 
-    if (!head || !(*head))
+    if (!head || !(*head)) 
         return;
-    while ((*head) -> nextConnect) {
-        p = (*head) -> nextConnect;
+    while ((*head)->nextConnect) {
+        p = (*head)->nextConnect;
         free(*head);
-        *head  = p;
+        *head = p;
     }
-    if (!(*head) -> nextConnect && !(*head) -> nextPath) {
+    if (!(*head)->nextConnect && !(*head)->nextPath) {
         free(*head);
         *head = NULL;
         return;
     }
+
 }
 
 static void popNext(t_path **head) {
     t_path *p = NULL;
 
-    if (!head || !(*head))
+    if (!head || !(*head)) 
         return;
-    if ((*head) -> nextPath == NULL) {
+    if ((*head)->nextPath == NULL) {
         free(*head);
         *head = NULL;
         return;
     }
     else {
-        p = (*head) -> nextPath;
+        p = (*head)->nextPath;
         free(*head);
         *head = p;
     }
 }
 
-void deletePAth(t_path **head) {
+void deletePath(t_path **head) {
     if (!head || !(*head)) 
         return;
     while(*head) {
@@ -46,6 +47,7 @@ void deletePAth(t_path **head) {
 void deleteMatrix(int ***matrix, char **set) {
     int **mat = *matrix;
     int i = 0;
+
     while(set[i])
         i++;
     while(i >= 0) {

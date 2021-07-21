@@ -1,43 +1,34 @@
 #include "libmx.h"
 
-static char *mx_neg(int n) {
-    int i;
-    int a;
-    char *str;
+static int number_length(int number) {
+	int length = 0;
 
-    a = n;
-    i = 1;
-    while (i++ < 11 && a < -9)
-        a /= 10;
-    if ((str = (char *)malloc(i + 1)) == NULL)
-        return (NULL);
-    str[0] = '-';
-    str[i] = '\0';
-    while (i-- > 1) {
-        str[i] = -(n % 10) + '0';
-        n /= 10;
-    }
-    return (str);
+	while (number) {
+		number /= 10;
+		length++;
+	}
+	return length;
 }
 
 char *mx_itoa(int number) {
-    char *str;
-    int i;
-    int a;
+	int length = number_length(number);
+	int tmp = number;
+	char *result = NULL;
 
-    a = number;
-    if (number < 0)
-        return (mx_neg(a));
-    i = 0;
-    while (i++ < 10 && a > 9)
-        a /= 10;
-    if ((str = (char*)malloc(i + 1)) == NULL)
-        return (NULL);
-    str[i] = '\0';
-    while (i-- > 0) {
-        str[i] = number % 10 + '0';
-        number /= 10;
-    }
-    return (str);
+	result = mx_strnew(length);
+	if (number == 0)
+		return mx_strcpy(result, "0");
+	if (number == -2147483648)
+		return mx_strcpy(result, "-2147483648");
+	tmp = number;
+	for (int i = 0; i < length; i++) {
+		if (tmp < 0) {
+			result[length] = '-';
+			tmp = -tmp;
+		}
+		result[i] = (tmp % 10) + '0';
+		tmp /= 10;
+	}
+	mx_str_reverse(result);
+	return result;
 }
-

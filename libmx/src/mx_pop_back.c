@@ -1,7 +1,7 @@
 #include "libmx.h"
 
 void mx_pop_back(t_list **head) {
-    t_list *tmp = NULL;
+    t_list *temp = NULL;
 
     if (head == NULL || *head == NULL)
         return;
@@ -10,10 +10,10 @@ void mx_pop_back(t_list **head) {
         *head = NULL;
     }
     else {
-        tmp = *head;
-        while (tmp->next->next != NULL)
-            tmp = tmp->next;
-        free(tmp->next);
-        tmp->next = NULL;
+        temp = *head;
+        while (temp && temp->next->next != NULL)
+            temp = temp->next;
+        free(temp->next);
+        temp->next = NULL;
     }
 }
